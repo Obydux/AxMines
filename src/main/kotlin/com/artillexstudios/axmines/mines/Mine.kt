@@ -326,13 +326,9 @@ class Mine(val file: File, reset: Boolean = true) {
         placer = NMSHandlers.getNmsHandler().newParallelSetter(cuboid.world)
 
         // Calculate total block amount in the area
-        val width = abs(cuboid.maxX - cuboid.minX)
-        val length = abs(cuboid.maxZ - cuboid.minZ)
-        val height = abs(cuboid.maxY - cuboid.minY)
-
-        val widthFixed = if (width == 0) 1 else width
-        val lengthFixed = if (length == 0) 1 else length
-        val heightFixed = if (height == 0) 1 else height
+        val width = abs(cuboid.maxX - cuboid.minX) + 1
+        val length = abs(cuboid.maxZ - cuboid.minZ) + 1
+        val height = abs(cuboid.maxY - cuboid.minY) + 1
 
         this.volume = (widthFixed * lengthFixed * heightFixed).toDouble()
         if (Config.DEBUG) {
