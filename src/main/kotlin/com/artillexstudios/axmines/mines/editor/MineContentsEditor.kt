@@ -1,0 +1,94 @@
+package com.artillexstudios.axmines.mines.editor
+
+import com.artillexstudios.axapi.utils.ItemBuilder
+import com.artillexstudios.axmines.mines.Mine
+import dev.triumphteam.gui.components.util.GuiFiller
+import dev.triumphteam.gui.guis.Gui
+import dev.triumphteam.gui.guis.GuiItem
+import java.util.Locale
+import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
+import org.bukkit.Material
+import org.bukkit.entity.Player
+import org.bukkit.event.inventory.ClickType
+import org.bukkit.inventory.ItemStack
+
+class MineContentsEditor(val mine: Mine, val player: Player) {
+
+    fun open() {
+        val gui = Gui.paginated()
+            .disableAllInteractions()
+            .title(MiniMessage.miniMessage().deserialize("<red>Content editor"))
+            .pageSize(27)
+            .rows(5)
+            .create()
+
+        GuiFiller(gui).fillBorder(GuiItem(ItemStack(Material.GRAY_STAINED_GLASS_PANE)))
+
+        gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).setName("<gray>Go back").get()) {
+            MineEditor(mine, player).open()
+        })
+
+        gui.setItem(37, GuiItem(ItemBuilder(Material.ARROW).setName("<gray>Previous page").get()) {
+            gui.previous()
+        })
+
+        gui.setItem(43, GuiItem(ItemBuilder(Material.ARROW).setName("<gray>Next page").get()) {
+            gui.next()
+        })
+
+        gui.setPlayerInventoryAction { event ->
+            mine.config.CONTENTS[event.currentItem?.type?.name?.lowercase(Locale.ENGLISH)] = 10
+            mine.config.config.set("contents", mine.config.CONTENTS)
+            open()
+        }
+
+        mine.config.CONTENTS.forEach { (type, chance) ->
+            val item = ItemBuilder(
+                mapOf(
+                    Pair("material", type), Pair(
+                        "lore", listOf(
+                            "", "<gray> Chance: <chance>",
+                            "",
+                            "<red>Chances don't have to add up to 100%!",
+                            "<red>Chances are relative to eachother, so you don't have to worry",
+                            "<red>about chances being too high or too low!",
+                            "",
+                            "<green>Left click to increase! (Shift for +10)",
+                            "<red>Right click to decrease! (Shift for -10)",
+                            "<#ff0000>Drop to remove!"
+                        )
+                    )
+                ), Placeholder.unparsed("chance", chance.toString())
+            ).get()
+
+            gui.addItem(GuiItem(item) { event ->
+                if (event.click == ClickType.DROP) {
+                    mine.config.CONTENTS.remove(type)
+                } else if (event.isLeftClick) {
+                    if (event.isShiftClick) {
+                        mine.config.CONTENTS[type] = (chance as Number).toDouble() + 10.0
+                    } else {
+                        mine.config.CONTENTS[type] = (chance as Number).toDouble() + 1.0
+                    }
+                } else if (event.isRightClick) {
+                    if (event.isShiftClick) {
+                        mine.config.CONTENTS[type] = (chance as Number).toDouble() - 10.0
+                    } else {
+                        mine.config.CONTENTS[type] = (chance as Number).toDouble() - 1.0
+                    }
+                }
+
+                mine.config.config.set("contents", mine.config.CONTENTS)
+                open()
+            })
+        }
+
+        gui.setCloseGuiAction {
+            mine.config.config.save()
+            mine.reload(false)
+        }
+
+        gui.open(player)
+    }
+}

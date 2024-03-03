@@ -1,0 +1,6 @@
+name: "AxMines"
+main: "com.artillexstudios.axmines.AxMinesPlugin"
+version: "1.0.0"
+api-version: "1.18"
+softdepend:
+  - PlaceholderAPI
