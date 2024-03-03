@@ -330,9 +330,9 @@ class Mine(val file: File, reset: Boolean = true) {
         val length = abs(cuboid.maxZ - cuboid.minZ) + 1
         val height = abs(cuboid.maxY - cuboid.minY) + 1
 
-        this.volume = (widthFixed * lengthFixed * heightFixed).toDouble()
+        this.volume = (width * length * height).toDouble()
         if (Config.DEBUG) {
-            LOGGER.info("Mine volume: $volume. Width: $widthFixed, length: $lengthFixed, height: $heightFixed")
+            LOGGER.info("Mine volume: $volume. Width: $width, length: $length, height: $height")
         }
         this.blocks = this.volume
 
