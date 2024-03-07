@@ -72,6 +72,8 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
             ItemBuilder(Material.ANVIL).setName("<gold>Commands").setLore(
                 listOf(
                     "",
+                    "<gray>The commands that are ran when this reward is given.",
+                    "",
                     "<green>Click to edit!",
                 )
             ).get()
@@ -83,6 +85,8 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
             ItemBuilder(Material.IRON_HOE).setName("<gold>Items").setLore(
                 listOf(
                     "",
+                    "<gray>The items that are given when this reward is given.",
+                    "",
                     "<green>Click to edit!",
                 )
             ).get()
@@ -93,6 +97,9 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
         gui.addItem(GuiItem(
             ItemBuilder(Material.STONE).setName("<gold>Blocks").setLore(
                 listOf(
+                    "",
+                    "<gray>The blocks that this reward triggers on.",
+                    "<red>No block means it triggers on any blocks!",
                     "",
                     "<green>Click to edit!",
                 )
@@ -179,7 +186,6 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
                 }
 
                 factory.withFirstPrompt(prompt)
-                factory.withLocalEcho(true)
                 factory.buildConversation(event.whoClicked as Player).begin()
             })
 

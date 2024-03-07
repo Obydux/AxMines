@@ -218,27 +218,27 @@ class Mine(val file: File, reset: Boolean = true) {
                         }
                     }
                 }
-            }
 
-            when (config.TELEPORT_ON_RESET) {
-                0 -> {
-                    cuboid.world.players.forEach {
-                        if (cuboid.contains(it.location)) {
-                            it.teleport(cuboid.world.getHighestBlockAt(it.location).getLocation().add(0.0, 1.0, 0.0))
+                when (config.TELEPORT_ON_RESET) {
+                    0 -> {
+                        cuboid.world.players.forEach {
+                            if (cuboid.contains(it.location)) {
+                                it.teleport(cuboid.world.getHighestBlockAt(it.location).getLocation().add(0.0, 1.0, 0.0))
+                            }
                         }
                     }
-                }
 
-                1 -> {
-                    val tpLocation = Serializers.LOCATION.deserialize(config.TELEPORT_LOCATION)
-                    cuboid.world.players.forEach {
-                        if (cuboid.contains(it.location)) {
-                            it.teleport(tpLocation)
+                    1 -> {
+                        val tpLocation = Serializers.LOCATION.deserialize(config.TELEPORT_LOCATION)
+                        cuboid.world.players.forEach {
+                            if (cuboid.contains(it.location)) {
+                                it.teleport(tpLocation)
+                            }
                         }
                     }
-                }
 
-                else -> {}
+                    else -> {}
+                }
             }
 
             running.set(false)

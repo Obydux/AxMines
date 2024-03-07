@@ -98,6 +98,7 @@ class MineEditor(val mine: Mine, val player: Player) {
                     " <gray>- <white>0:</white> Whole world",
                     " <gray>- <white>-1:</white> All worlds",
                     " <gray>- <white>-2:</white> Silent",
+                    " <gray>- <white>< -2:</white> Same as not negative",
                     " <gray>- <white>>= 1:</white> broadcast in range",
                     "",
                     "<green>Left click to increase! (Shift for +10)",
@@ -113,7 +114,7 @@ class MineEditor(val mine: Mine, val player: Player) {
                     "",
                     "<gray>Current value: <white><value> ticks (<time> formatted)",
                     "",
-                    "20 ticks = 1 second",
+                    "<w>20 ticks = 1 second",
                     "",
                     "<green>Click to edit"
                 ), Placeholder.unparsed("value", mine.config.RESET_TICKS.toString()),
@@ -164,7 +165,6 @@ class MineEditor(val mine: Mine, val player: Player) {
             }
 
             factory.withFirstPrompt(prompt)
-            factory.withLocalEcho(true)
             factory.buildConversation(event.whoClicked as Player).begin()
         })
 
@@ -250,7 +250,6 @@ class MineEditor(val mine: Mine, val player: Player) {
             }
 
             factory.withFirstPrompt(prompt)
-            factory.withLocalEcho(true)
             factory.buildConversation(event.whoClicked as Player).begin()
         })
 
