@@ -4,6 +4,7 @@ import com.artillexstudios.axapi.AxPlugin
 import com.artillexstudios.axapi.libs.libby.BukkitLibraryManager
 import com.artillexstudios.axapi.libs.libby.Library
 import com.artillexstudios.axapi.utils.FeatureFlags
+import com.artillexstudios.axapi.utils.Version
 import com.artillexstudios.axmines.commands.AxMinesCommand
 import com.artillexstudios.axmines.config.impl.Config
 import com.artillexstudios.axmines.config.impl.Messages
@@ -12,6 +13,7 @@ import com.artillexstudios.axmines.listener.BlockListener
 import com.artillexstudios.axmines.mines.Mine
 import com.artillexstudios.axmines.mines.MineTicker
 import com.artillexstudios.axmines.mines.Mines
+import org.bstats.bukkit.Metrics
 import org.bukkit.Bukkit
 import revxrsal.commands.bukkit.BukkitCommandHandler
 
@@ -26,6 +28,14 @@ class AxMinesPlugin : AxPlugin() {
     }
 
     override fun enable() {
+        if (Version.getServerVersion().isOlderThan(Version.v1_18)) {
+            logger.severe("Your server version is not supported! Disabling!")
+            Bukkit.getPluginManager().disablePlugin(this)
+            return
+        }
+
+        Metrics(this, 20058)
+
         val libraryLoader = BukkitLibraryManager(this)
         libraryLoader.addMavenCentral()
         libraryLoader.addJitPack()

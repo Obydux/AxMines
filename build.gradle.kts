@@ -19,7 +19,8 @@ repositories {
 }
 
 dependencies {
-    implementation("com.artillexstudios.axapi:axapi:1.4.82")
+    implementation("com.artillexstudios.axapi:axapi:1.4.87")
+    implementation("org.bstats:bstats-bukkit:3.0.2")
     implementation("dev.triumphteam:triumph-gui:3.1.7")
     compileOnly("org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT")
     compileOnly("me.carleslc.Simple-YAML:Simple-Yaml:1.8.4")
@@ -33,6 +34,11 @@ dependencies {
 tasks {
     compileJava {
         options.encoding = Charsets.UTF_8.name()
+    }
+
+    shadowJar {
+        relocate("org.bstats", "com.artillexstudios.axmines.libs.bstats")
+        relocate("com.artillexstudios.axapi", "com.artillexstudios.axmines.libs.axapi")
     }
 
     processResources {
