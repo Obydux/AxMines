@@ -18,7 +18,7 @@ class MineRewardsEditor(val mine: Mine, val player: Player) {
         val gui = Gui.paginated()
             .disableAllInteractions()
             .title(MiniMessage.miniMessage().deserialize("<red>Reward editor"))
-            .pageSize(27)
+            .pageSize(21)
             .rows(5)
             .create()
 

@@ -117,7 +117,7 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
             val gui = Gui.paginated()
                 .disableAllInteractions()
                 .title(MiniMessage.miniMessage().deserialize("<red>Commands editor"))
-                .pageSize(27)
+                .pageSize(21)
                 .rows(5)
                 .create()
 
@@ -199,7 +199,7 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
             val gui = Gui.paginated()
                 .disableAllInteractions()
                 .title(MiniMessage.miniMessage().deserialize("<red>Items editor"))
-                .pageSize(27)
+                .pageSize(21)
                 .rows(5)
                 .create()
 
@@ -260,7 +260,7 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
             val gui = Gui.paginated()
                 .disableAllInteractions()
                 .title(MiniMessage.miniMessage().deserialize("<red>Blocks editor"))
-                .pageSize(27)
+                .pageSize(21)
                 .rows(5)
                 .create()
 

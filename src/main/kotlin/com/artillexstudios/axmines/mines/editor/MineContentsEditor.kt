@@ -19,7 +19,7 @@ class MineContentsEditor(val mine: Mine, val player: Player) {
         val gui = Gui.paginated()
             .disableAllInteractions()
             .title(MiniMessage.miniMessage().deserialize("<red>Content editor"))
-            .pageSize(27)
+            .pageSize(21)
             .rows(5)
             .create()
 
@@ -29,11 +29,11 @@ class MineContentsEditor(val mine: Mine, val player: Player) {
             MineEditor(mine, player).open()
         })
 
-        gui.setItem(37, GuiItem(ItemBuilder(Material.ARROW).setName("<gray>Previous page").get()) {
+        gui.setItem(38, GuiItem(ItemBuilder(Material.ARROW).setName("<gray>Previous page").get()) {
             gui.previous()
         })
 
-        gui.setItem(43, GuiItem(ItemBuilder(Material.ARROW).setName("<gray>Next page").get()) {
+        gui.setItem(42, GuiItem(ItemBuilder(Material.ARROW).setName("<gray>Next page").get()) {
             gui.next()
         })
 
