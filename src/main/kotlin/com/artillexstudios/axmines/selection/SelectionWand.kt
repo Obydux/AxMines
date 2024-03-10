@@ -29,8 +29,8 @@ object SelectionWand {
         val item = ItemStack(Material.GOLDEN_AXE)
         val meta = item.itemMeta ?: return item
 
-        meta.setDisplayName(StringUtils.formatToString("<#00AAFF><b>Selection wand"))
-        meta.lore = listOf("", StringUtils.formatToString("<#00AAFF><b>Left click"), StringUtils.formatToString(" <gray>- Select position #1"), "", StringUtils.formatToString("<#00AAFF><b>Right click"), StringUtils.formatToString(" <gray>- Select position #2"))
+        meta.setDisplayName(StringUtils.formatToString("<#7700FF><b>Selection wand"))
+        meta.lore = listOf("", StringUtils.formatToString("<#7700FF><b>Left click"), StringUtils.formatToString(" <gray>- Select position #1"), "", StringUtils.formatToString("<#7700FF><b>Right click"), StringUtils.formatToString(" <gray>- Select position #2"))
         meta.addEnchant(Enchantment.ARROW_DAMAGE, 1, true)
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS)
 

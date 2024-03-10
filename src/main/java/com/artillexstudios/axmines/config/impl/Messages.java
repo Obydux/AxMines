@@ -8,7 +8,7 @@ import java.util.List;
 public class Messages extends AbstractConfig {
 
     @Key("messages.prefix")
-    public String PREFIX = "<#00AAFF><b>AxMines</b> <gray>»</gray> ";
+    public String PREFIX = "<#7700FF><b>AxMines</b> <gray>»</gray> ";
 
     @Key("messages.reload")
     public String RELOAD = "Reloaded in <time> ms!";
@@ -47,10 +47,10 @@ public class Messages extends AbstractConfig {
     public String DAY = "d";
 
     @Key("messages.list")
-    public List<String> LIST = List.of(" ", "<#00AAFF><b>AxMines</b> <gray>»</gray>", " <gray>- <white>Current mines: <mines>", " ");
+    public List<String> LIST = List.of(" ", "<#7700FF><b>AxMines</b> <gray>»</gray>", " <gray>- <white>Current mines: <mines>", " ");
 
     @Key("messages.help")
-    public List<String> HELP = List.of(" ", "<#00AAFF><b>AxMines</b> <gray>»</gray>", " <gray>- <white>/axmines reload <gray>| <#00AAFF>Reload the config", " <gray>- <white>/axmines wand <gray>| <#00AAFF>Get a mine selection wand", " <gray>- <white>/axmines delete <gray>| <#00AAFF>Delete a mine", " <gray>- <white>/axmines list <gray>| <#00AAFF>List all mines", " <gray>- <white>/axmines redefine <gray>| <#00AAFF>Redefine a mine", " <gray>- <white>/axmines teleport <gray>| <#00AAFF>Teleport to a mine", " <gray>- <white>/axmines editor <gray>| <#00AAFF>Open the mine editor", " <gray>- <white>/axmines setteleport <gray>| <#00AAFF>Set the teleport location of a mine", " <gray>- <white>/axmines create <gray>| <#00AAFF>Create a mine", " <gray>- <white>/axmines reset <gray>| <#00AAFF>Reset a mine", "");
+    public List<String> HELP = List.of(" ", "<#7700FF><b>AxMines</b> <gray>»</gray>", " <gray>- <white>/axmines reload <gray>| <#7700FF>Reload the config", " <gray>- <white>/axmines wand <gray>| <#7700FF>Get a mine selection wand", " <gray>- <white>/axmines delete <gray>| <#7700FF>Delete a mine", " <gray>- <white>/axmines list <gray>| <#7700FF>List all mines", " <gray>- <white>/axmines redefine <gray>| <#7700FF>Redefine a mine", " <gray>- <white>/axmines teleport <gray>| <#7700FF>Teleport to a mine", " <gray>- <white>/axmines editor <gray>| <#7700FF>Open the mine editor", " <gray>- <white>/axmines setteleport <gray>| <#7700FF>Set the teleport location of a mine", " <gray>- <white>/axmines create <gray>| <#7700FF>Create a mine", " <gray>- <white>/axmines reset <gray>| <#7700FF>Reset a mine", "");
 
     @Key("messages.redefine")
     public String REDEFINE = "<green>Successfully redefined!";
