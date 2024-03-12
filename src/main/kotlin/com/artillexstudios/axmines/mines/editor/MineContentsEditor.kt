@@ -11,6 +11,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 
 class MineContentsEditor(val mine: Mine, val player: Player) {
@@ -18,22 +19,22 @@ class MineContentsEditor(val mine: Mine, val player: Player) {
     fun open() {
         val gui = Gui.paginated()
             .disableAllInteractions()
-            .title(MiniMessage.miniMessage().deserialize("<red>Content editor"))
+            .title(MiniMessage.miniMessage().deserialize("<color:#00AAFF>Content editor"))
             .pageSize(21)
             .rows(5)
             .create()
 
         GuiFiller(gui).fillBorder(GuiItem(ItemStack(Material.GRAY_STAINED_GLASS_PANE)))
 
-        gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).setName("<gray>Go back").get()) {
+        gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).applyItemFlags(listOf(ItemFlag.HIDE_ATTRIBUTES)).setName("<color:#00AAFF>Go back").get()) {
             MineEditor(mine, player).open()
         })
 
-        gui.setItem(38, GuiItem(ItemBuilder(Material.ARROW).setName("<gray>Previous page").get()) {
+        gui.setItem(38, GuiItem(ItemBuilder(Material.ARROW).setName("<color:#00AAFF>Previous page").get()) {
             gui.previous()
         })
 
-        gui.setItem(42, GuiItem(ItemBuilder(Material.ARROW).setName("<gray>Next page").get()) {
+        gui.setItem(42, GuiItem(ItemBuilder(Material.ARROW).setName("<color:#00AAFF>Next page").get()) {
             gui.next()
         })
 
@@ -48,15 +49,15 @@ class MineContentsEditor(val mine: Mine, val player: Player) {
                 mapOf(
                     Pair("material", type), Pair(
                         "lore", listOf(
-                            "", "<gray> Chance: <chance>",
+                            "", "<color:#DDDDDD>> <color:#00AAFF>Chance: <white><chance>",
                             "",
-                            "<red>Chances don't have to add up to 100%!",
-                            "<red>Chances are relative to eachother, so you don't have to worry",
-                            "<red>about chances being too high or too low!",
+                            "<gray>> <color:#00AAFF>Chances don't have to add up to 100%!",
+                            "<gray>> <color:#00AAFF>Chances are relative to eachother, so you don't have",
+                            "  <color:#00AAFF>to worry about chances being too high or too low!",
                             "",
-                            "<green>Left click to increase! (Shift for +10)",
-                            "<red>Right click to decrease! (Shift for -10)",
-                            "<#ff0000>Drop to remove!"
+                            "<color:#00FF00>Left click to increase! (Shift for +10)",
+                            "<color:#FF0000>Right click to decrease! (Shift for -10)",
+                            "<#DD0000>Drop to remove!"
                         )
                     )
                 ), Placeholder.unparsed("chance", chance.toString())

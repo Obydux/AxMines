@@ -15,18 +15,18 @@ class MinesEditor(private val player: Player) {
     fun open() {
         val gui = Gui.paginated()
             .disableAllInteractions()
-            .title(MiniMessage.miniMessage().deserialize("<red>Mines editor"))
+            .title(MiniMessage.miniMessage().deserialize("<color:#00AAFF>Mines editor"))
             .pageSize(21)
             .rows(5)
             .create()
 
         GuiFiller(gui).fillBorder(GuiItem(ItemStack(Material.GRAY_STAINED_GLASS_PANE)))
 
-        gui.setItem(38, GuiItem(ItemBuilder(Material.ARROW).setName("<gray>Previous page").get()) {
+        gui.setItem(38, GuiItem(ItemBuilder(Material.ARROW).setName("<color:#00AAFF>Previous page").get()) {
             gui.previous()
         })
 
-        gui.setItem(42, GuiItem(ItemBuilder(Material.ARROW).setName("<gray>Next page").get()) {
+        gui.setItem(42, GuiItem(ItemBuilder(Material.ARROW).setName("<color:#00AAFF>Next page").get()) {
             gui.next()
         })
 
@@ -35,7 +35,7 @@ class MinesEditor(private val player: Player) {
                 mapOf(
                     Pair("material", "golden_pickaxe"),
                     Pair("name", mine.config.DISPLAY_NAME),
-                    Pair("lore", listOf("", "<green> Click here to edit this mine!"))
+                    Pair("lore", listOf("", "<color:#00AAFF>Click here to edit this mine!"))
                 )).get()
 
             gui.addItem(GuiItem(item) {

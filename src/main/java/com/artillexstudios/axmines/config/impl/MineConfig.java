@@ -9,7 +9,7 @@ import java.util.Map;
 public class MineConfig extends Messages {
 
     @Key("display-name")
-    public String DISPLAY_NAME = "<red>Example";
+    public String DISPLAY_NAME = "<color:#FF0000>Example";
 
     @Key("contents")
     public Map<Object, Object> CONTENTS = Map.of("gold_block", 11, "diamond_block", 10, "emerald_block", 25, "iron_block", 10);

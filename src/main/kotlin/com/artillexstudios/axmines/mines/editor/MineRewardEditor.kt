@@ -16,6 +16,7 @@ import org.bukkit.conversations.Prompt
 import org.bukkit.conversations.StringPrompt
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 
 class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<String, Any>) {
@@ -23,24 +24,24 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
     fun open() {
         val gui = Gui.gui()
             .disableAllInteractions()
-            .title(MiniMessage.miniMessage().deserialize("<red>Reward editor"))
+            .title(MiniMessage.miniMessage().deserialize("<color:#00AAFF>Reward editor"))
             .rows(5)
             .create()
 
         GuiFiller(gui).fillBorder(GuiItem(ItemStack(Material.GRAY_STAINED_GLASS_PANE)))
 
-        gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).setName("<gray>Go back").get()) {
+        gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).applyItemFlags(listOf(ItemFlag.HIDE_ATTRIBUTES)).setName("<gray>Go back").get()) {
             MineRewardsEditor(mine, player).open()
         })
 
         gui.addItem(GuiItem(
-            ItemBuilder(Material.GOLD_BLOCK).setName("<gold>Chance").setLore(
+            ItemBuilder(Material.GOLD_BLOCK).setName("<color:#00AAFF>Chance").setLore(
                 listOf(
                     "",
-                    "<gray>Current chance: <chance>",
+                    "<gray>> <color:#00AAFF>Current chance: <white><chance>",
                     "",
-                    "<green>Left click to increase! (Shift for +10)",
-                    "<green>Right click to decrease! (Shift for -10)"
+                    "<color:#00FF00>Left click to increase! (Shift for +10)",
+                    "<color:#FF0000>Right click to decrease! (Shift for -10)"
                 ), Placeholder.unparsed("chance", map.getOrDefault("chance", 10.0).toString())
             ).get()
         ) { event ->
@@ -69,12 +70,12 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
         })
 
         gui.addItem(GuiItem(
-            ItemBuilder(Material.ANVIL).setName("<gold>Commands").setLore(
+            ItemBuilder(Material.ANVIL).setName("<color:#00AAFF>Commands").setLore(
                 listOf(
                     "",
-                    "<gray>The commands that are ran when this reward is given.",
+                    "<gray>> The commands that are ran when this reward is given.",
                     "",
-                    "<green>Click to edit!",
+                    "<color:#00AAFF>Click to edit!",
                 )
             ).get()
         ) {
@@ -82,12 +83,12 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
         })
 
         gui.addItem(GuiItem(
-            ItemBuilder(Material.IRON_HOE).setName("<gold>Items").setLore(
+            ItemBuilder(Material.IRON_HOE).setName("<color:#00AAFF>Items").setLore(
                 listOf(
                     "",
-                    "<gray>The items that are given when this reward is given.",
+                    "<gray>> The items that are given when this reward is given.",
                     "",
-                    "<green>Click to edit!",
+                    "<color:#00AAFF>Click to edit!",
                 )
             ).get()
         ) {
@@ -95,13 +96,13 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
         })
 
         gui.addItem(GuiItem(
-            ItemBuilder(Material.STONE).setName("<gold>Blocks").setLore(
+            ItemBuilder(Material.STONE).setName("<color:#00AAFF>Blocks").setLore(
                 listOf(
                     "",
-                    "<gray>The blocks that this reward triggers on.",
-                    "<red>No block means it triggers on any blocks!",
+                    "<gray>> The blocks that this reward triggers on.",
+                    "<color:#FF0000>No block means it triggers on any blocks!",
                     "",
-                    "<green>Click to edit!",
+                    "<color:#00AAFF>Click to edit!",
                 )
             ).get()
         ) {
@@ -116,22 +117,22 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
         fun open() {
             val gui = Gui.paginated()
                 .disableAllInteractions()
-                .title(MiniMessage.miniMessage().deserialize("<red>Commands editor"))
+                .title(MiniMessage.miniMessage().deserialize("<color:#00AAFF>Commands editor"))
                 .pageSize(21)
                 .rows(5)
                 .create()
 
             GuiFiller(gui).fillBorder(GuiItem(ItemStack(Material.GRAY_STAINED_GLASS_PANE)))
 
-            gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).setName("<gray>Go back").get()) {
+            gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).applyItemFlags(listOf(ItemFlag.HIDE_ATTRIBUTES)).setName("<color:#00AAFF>Go back").get()) {
                 MineRewardEditor(mine, player, map).open()
             })
 
-            gui.setItem(38, GuiItem(ItemBuilder(Material.ARROW).setName("<gray>Previous page").get()) {
+            gui.setItem(38, GuiItem(ItemBuilder(Material.ARROW).setName("<color:#00AAFF>Previous page").get()) {
                 gui.previous()
             })
 
-            gui.setItem(42, GuiItem(ItemBuilder(Material.ARROW).setName("<gray>Next page").get()) {
+            gui.setItem(42, GuiItem(ItemBuilder(Material.ARROW).setName("<color:#00AAFF>Next page").get()) {
                 gui.next()
             })
 
@@ -139,7 +140,7 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
             (map["commands"] as? MutableList<String>)?.forEach {
                 gui.addItem(
                     GuiItem(
-                        ItemBuilder(Material.PAPER).setName(it).setLore(listOf("", "<red>Drop to remove!")).get()
+                        ItemBuilder(Material.PAPER).setName(it).setLore(listOf("", "<color:#FF0000>Drop to remove!")).get()
                     ) { event ->
                         if (event.click == ClickType.DROP) {
                             mine.config.RANDOM_REWARDS.remove(map)
@@ -167,7 +168,7 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
                 val prompt = object : StringPrompt() {
 
                     override fun getPromptText(context: ConversationContext): String {
-                        return StringUtils.formatToString("<green>Please type the command you'd like to add! You can use the <white><player></white> placeholder here!")
+                        return StringUtils.formatToString("<color:#00FF00>Please type the command you'd like to add! You can use the <white><player></white> placeholder here!")
                     }
 
                     override fun acceptInput(context: ConversationContext, input: String?): Prompt? {
@@ -198,22 +199,22 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
         fun open() {
             val gui = Gui.paginated()
                 .disableAllInteractions()
-                .title(MiniMessage.miniMessage().deserialize("<red>Items editor"))
+                .title(MiniMessage.miniMessage().deserialize("<color:#FF0000>Items editor"))
                 .pageSize(21)
                 .rows(5)
                 .create()
 
             GuiFiller(gui).fillBorder(GuiItem(ItemStack(Material.GRAY_STAINED_GLASS_PANE)))
 
-            gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).setName("<gray>Go back").get()) {
+            gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).applyItemFlags(listOf(ItemFlag.HIDE_ATTRIBUTES)).setName("<color:#00AAFF>Go back").get()) {
                 MineRewardEditor(mine, player, map).open()
             })
 
-            gui.setItem(38, GuiItem(ItemBuilder(Material.ARROW).setName("<gray>Previous page").get()) {
+            gui.setItem(38, GuiItem(ItemBuilder(Material.ARROW).setName("<color:#00AAFF>Previous page").get()) {
                 gui.previous()
             })
 
-            gui.setItem(42, GuiItem(ItemBuilder(Material.ARROW).setName("<gray>Next page").get()) {
+            gui.setItem(42, GuiItem(ItemBuilder(Material.ARROW).setName("<color:#00AAFF>Next page").get()) {
                 gui.next()
             })
 
@@ -259,14 +260,14 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
         fun open() {
             val gui = Gui.paginated()
                 .disableAllInteractions()
-                .title(MiniMessage.miniMessage().deserialize("<red>Blocks editor"))
+                .title(MiniMessage.miniMessage().deserialize("<color:#FF0000>Blocks editor"))
                 .pageSize(21)
                 .rows(5)
                 .create()
 
             GuiFiller(gui).fillBorder(GuiItem(ItemStack(Material.GRAY_STAINED_GLASS_PANE)))
 
-            gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).setName("<gray>Go back").get()) {
+            gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).applyItemFlags(listOf(ItemFlag.HIDE_ATTRIBUTES)).setName("<gray>Go back").get()) {
                 MineRewardEditor(mine, player, map).open()
             })
 
@@ -284,7 +285,7 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
                         ItemBuilder(
                             mapOf(
                                 Pair("material", it),
-                                Pair("lore", listOf("", "<red>Drop to remove!"))
+                                Pair("lore", listOf("", "<color:#FF0000>Drop to remove!"))
                             )
                         ).get()
                     ) { event ->

@@ -119,7 +119,7 @@ class AxMinesCommand {
         val createdMine = Mine(file, false)
         createdMine.config.config.set("selection.1", Serializers.LOCATION.serialize(selection.position1))
         createdMine.config.config.set("selection.2", Serializers.LOCATION.serialize(selection.position2))
-        createdMine.config.config.set("display-name", "<red>$name</red>")
+        createdMine.config.config.set("display-name", "<color:#FF0000>$name</red>")
         createdMine.config.config.save()
         val maxY = createdMine.cuboid.maxY
         createdMine.reload(false)

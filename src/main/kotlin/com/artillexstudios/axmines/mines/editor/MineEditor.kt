@@ -16,6 +16,7 @@ import org.bukkit.conversations.ConversationFactory
 import org.bukkit.conversations.Prompt
 import org.bukkit.conversations.StringPrompt
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 
 class MineEditor(val mine: Mine, val player: Player) {
@@ -23,124 +24,124 @@ class MineEditor(val mine: Mine, val player: Player) {
     fun open() {
         val gui = Gui.gui()
             .disableAllInteractions()
-            .title(MiniMessage.miniMessage().deserialize("<red>Mines editor"))
+            .title(MiniMessage.miniMessage().deserialize("<color:#00AAFF>Mines editor"))
             .rows(5)
             .create()
 
         GuiFiller(gui).fillBorder(GuiItem(ItemStack(Material.GRAY_STAINED_GLASS_PANE)))
 
-        gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).setName("<gray>Go back").get()) {
+        gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).applyItemFlags(listOf(ItemFlag.HIDE_ATTRIBUTES)).setName("<color:#00AAFF>Go back").get()) {
             MinesEditor(player).open()
         })
 
         val displayName = ItemBuilder(ItemStack(Material.NAME_TAG))
-            .setName("<green>Display name")
+            .setName("<color:#00AAFF><bold>Display name")
             .setLore(
-                listOf("", " <gray>Current name: <white><name>", "", " <gray>- <green>Click to edit!"),
+                listOf("", "<gray>> <color:#00AAFF>Current name: <white><name>", "", "<color:#00AAFF>Click to edit!"),
                 Placeholder.parsed("name", mine.config.DISPLAY_NAME)
             )
             .get()
 
         val contents = ItemBuilder(ItemStack(Material.EMERALD_BLOCK))
-            .setName("<green>Contents")
-            .setLore(listOf("", " <gray>- <green>Click to edit!"))
+            .setName("<color:#00AAFF><bold>Contents")
+            .setLore(listOf("", "<color:#00AAFF>Click to edit!"))
             .get()
 
         val teleportOnReset = ItemBuilder(ItemStack(Material.ENDER_PEARL))
-            .setName("<green>Teleport on reset")
+            .setName("<color:#00AAFF><bold>Teleport on reset")
             .setLore(
                 listOf(
                     "",
-                    "<gray>Current value: <white><value>",
+                    "<gray>> <color:#00AAFF>Current value: <white><value>",
                     "",
-                    " <gray>- <white>0:</white> Top block at player's location",
-                    " <gray>- <white>1:</white> Teleport location",
-                    " <gray>- <white>Other:</white> No teleport",
+                    " <gray>- <white>0: <color:#00AAFF>Top block at player's location",
+                    " <gray>- <white>1: <color:#00AAFF>Teleport location",
+                    " <gray>- <white>Other: <color:#00AAFF>No teleport",
                     "",
-                    "<green>Left click to increase!",
-                    "<green>Right click to decrease!"
+                    "<color:#00FF00>Left click to increase!",
+                    "<color:#FF0000>Right click to decrease!"
                 ), Placeholder.unparsed("value", mine.config.TELEPORT_ON_RESET.toString())
             )
             .get()
 
         val actionBarEnabled = ItemBuilder(ItemStack(Material.STONE_BUTTON))
-            .setName("<green>Action bar enabled")
+            .setName("<color:#00AAFF><bold>Action bar enabled")
             .setLore(
                 listOf(
                     "",
-                    "<gray>Current value: <white><value>",
+                    "<gray>> <color:#00AAFF>Current value: <white><value>",
                     "",
-                    "<green>Click to toggle!"
+                    "<color:#00AAFF>Click to toggle!"
                 ), Placeholder.unparsed("value", mine.config.ACTION_BAR_ENABLED.toString())
             )
             .get()
 
         val actionBarRange = ItemBuilder(ItemStack(Material.LEAD))
-            .setName("<green>Action bar range")
+            .setName("<color:#00AAFF><bold>Action bar range")
             .setLore(
                 listOf(
                     "",
-                    "<gray>Current value: <white><value>",
+                    "<gray>> <color:#00AAFF>Current value: <white><value>",
                     "",
-                    "<green>Left click to increase! (Shift for +10)",
-                    "<green>Right click to decrease! (Shift for -10)"
+                    "<color:#00FF00>Left click to increase! (Shift for +10)",
+                    "<color:#FF0000>Right click to decrease! (Shift for -10)"
                 ), Placeholder.unparsed("value", mine.config.ACTION_BAR_RANGE.toString())
             )
             .get()
 
         val broadcastReset = ItemBuilder(ItemStack(Material.OAK_BUTTON))
-            .setName("<green>Broadcast reset")
+            .setName("<color:#00AAFF><bold>Broadcast reset")
             .setLore(
                 listOf(
                     "",
-                    "<gray>Current value: <white><value>",
+                    "<gray>> <color:#00AAFF>Current value: <white><value>",
                     "",
-                    " <gray>- <white>0:</white> Whole world",
-                    " <gray>- <white>-1:</white> All worlds",
-                    " <gray>- <white>-2:</white> Silent",
-                    " <gray>- <white>< -2:</white> Same as not negative",
-                    " <gray>- <white>>= 1:</white> broadcast in range",
+                    " <gray>- <white>0: <color:#00AAFF>Whole world",
+                    " <gray>- <white>-1: <color:#00AAFF>All worlds",
+                    " <gray>- <white>-2: <color:#00AAFF>Silent",
+                    " <gray>- <white>< -2: <color:#00AAFF>Same as not negative",
+                    " <gray>- <white>>= 1: <color:#00AAFF>broadcast in range",
                     "",
-                    "<green>Left click to increase! (Shift for +10)",
-                    "<green>Right click to decrease! (Shift for -10)"
+                    "<color:#00FF00>Left click to increase! (Shift for +10)",
+                    "<color:#FF0000>Right click to decrease! (Shift for -10)"
                 ), Placeholder.unparsed("value", mine.config.BROADCAST_RESET.toString())
             )
             .get()
 
         val resetTicks = ItemBuilder(ItemStack(Material.CHEST))
-            .setName("<green>Reset ticks")
+            .setName("<color:#00AAFF><bold>Reset ticks")
             .setLore(
                 listOf(
                     "",
-                    "<gray>Current value: <white><value> ticks (<time> formatted)",
+                    "<gray>> <color:#00AAFF>Current value: <white><value> ticks <gray>(<time> formatted)",
                     "",
-                    "<w>20 ticks = 1 second",
+                    "<gray>20 ticks = 1 second",
                     "",
-                    "<green>Click to edit"
+                    "<color:#00AAFF>Click to edit"
                 ), Placeholder.unparsed("value", mine.config.RESET_TICKS.toString()),
                 Placeholder.unparsed("time", TimeUtils.format(mine.config.RESET_TICKS / 20 * 1000, mine))
             )
             .get()
 
         val resetPercent = ItemBuilder(ItemStack(Material.ANVIL))
-            .setName("<green>Reset percent")
+            .setName("<color:#00AAFF><bold>Reset percent")
             .setLore(
                 listOf(
                     "",
-                    "<gray>Current value: <white><value>%",
+                    "<gray>> <color:#00AAFF>Current value: <white><value>%",
                     "",
-                    "<green>Left click to increase! (Shift for +10)",
-                    "<green>Right click to decrease! (Shift for -10)"
+                    "<color:#00FF00>Left click to increase! (Shift for +10)",
+                    "<color:#FF0000>Right click to decrease! (Shift for -10)"
                 ), Placeholder.unparsed("value", mine.config.RESET_PERCENT.toString())
             )
             .get()
 
         val rewards = ItemBuilder(ItemStack(Material.CHEST))
-            .setName("<green>Rewards")
+            .setName("<color:#00AAFF><bold>Rewards")
             .setLore(
                 listOf(
                     "",
-                    "<green>Click to edit!",
+                    "<color:#00AAFF>Click to edit!",
                 )
             )
             .get()
@@ -151,7 +152,7 @@ class MineEditor(val mine: Mine, val player: Player) {
             val factory = ConversationFactory(AxMinesPlugin.INSTANCE)
             val prompt = object : StringPrompt() {
                 override fun getPromptText(context: ConversationContext): String {
-                    return StringUtils.formatToString("<green>Please type the new displayname of this mine!")
+                    return StringUtils.formatToString("<color:#00FF00>Please type the new displayname of this mine!")
                 }
 
                 override fun acceptInput(context: ConversationContext, input: String?): Prompt? {
@@ -236,7 +237,7 @@ class MineEditor(val mine: Mine, val player: Player) {
             val factory = ConversationFactory(AxMinesPlugin.INSTANCE)
             val prompt = object : StringPrompt() {
                 override fun getPromptText(context: ConversationContext): String {
-                    return StringUtils.formatToString("<green>Please type how often the mine should reset in ticks! (1 second = 20 ticks)")
+                    return StringUtils.formatToString("<color:#00FF00>Please type how often the mine should reset in ticks! (1 second = 20 ticks)")
                 }
 
                 override fun acceptInput(context: ConversationContext, input: String?): Prompt? {
