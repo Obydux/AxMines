@@ -48,13 +48,12 @@ public class MineConfig extends Messages {
     public int ACTION_BAR_RANGE = 10;
 
     @Key("timer-format")
-    @Comment("""
-            The format of the time placeholder
-            1 -> HH:MM:SS, for example 01:25:35
-            2 -> short format, for example 20m
-            3 - text format, for example 01h 25m 35s
-            """)
+    @Comment({"The format of the time placeholder", "1 -> HH:MM:SS, for example 01:25:35", "2 -> short format, for example 20m", "3 - text format, for example 01h 25m 35s"})
     public int TIMER_FORMAT = 2;
+
+    @Key("setter")
+    @Comment({"What blocksetter should we use to set the blocks?", "Options:", "parallel - Best performance, does not lag the server thread. Sometimes can be a little bit inaccurate", "fast - Sets the blocks on the main thread using faster methods", "bukkit - Uses the Bukkit API to set the blocks. This is the slowest out of all the setters", "", "If you are having issues with blocks not being set correctly, we suggest using bukkit."})
+    public String SETTER = "parallel";
 
     public MineConfig(String fileName) {
         super(fileName);

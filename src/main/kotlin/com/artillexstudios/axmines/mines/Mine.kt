@@ -1,14 +1,16 @@
 package com.artillexstudios.axmines.mines
 
-import com.artillexstudios.axapi.nms.NMSHandlers
 import com.artillexstudios.axapi.scheduler.Scheduler
 import com.artillexstudios.axapi.selection.Cuboid
-import com.artillexstudios.axapi.selection.ParallelBlockSetter
 import com.artillexstudios.axapi.serializers.Serializers
 import com.artillexstudios.axapi.utils.ItemBuilder
 import com.artillexstudios.axapi.utils.StringUtils
 import com.artillexstudios.axmines.config.impl.Config
 import com.artillexstudios.axmines.config.impl.MineConfig
+import com.artillexstudios.axmines.mines.setter.BlockSetter
+import com.artillexstudios.axmines.mines.setter.BukkitBlockSetter
+import com.artillexstudios.axmines.mines.setter.FastBlockSetter
+import com.artillexstudios.axmines.mines.setter.ParallelBlockSetter
 import com.artillexstudios.axmines.utils.TimeUtils
 import java.io.File
 import java.util.Locale
@@ -40,7 +42,7 @@ class Mine(val file: File, reset: Boolean = true) {
     val name: String = file.nameWithoutExtension
     val config: MineConfig = MineConfig("mines/${file.name}")
     lateinit var cuboid: Cuboid
-    private lateinit var placer: ParallelBlockSetter
+    private lateinit var placer: BlockSetter
     var volume = 0.0
         private set
     var blocks = 0.0
@@ -140,7 +142,7 @@ class Mine(val file: File, reset: Boolean = true) {
 
         var placed: Int
         val start = System.currentTimeMillis()
-        placer.fill(cuboid, distribution) {
+        placer.fill(cuboid, distribution ?: return) {
             placed = it
             val took = System.currentTimeMillis() - start
 
@@ -267,6 +269,11 @@ class Mine(val file: File, reset: Boolean = true) {
         config.reload()
         val corner1 = Serializers.LOCATION.deserialize(config.SELECTION_CORNER_1)
         val corner2 = Serializers.LOCATION.deserialize(config.SELECTION_CORNER_2)
+        if (corner1.world == null) {
+            LOGGER.error("The world provided is null! Location: {}. Worlds: {}", config.SELECTION_CORNER_1, Bukkit.getWorlds().joinToString(", "))
+            return
+        }
+
         cuboid = Cuboid(
             corner1.world,
             corner1.blockX,
@@ -323,7 +330,11 @@ class Mine(val file: File, reset: Boolean = true) {
 
         distribution = EnumeratedDistribution(list)
 
-        placer = NMSHandlers.getNmsHandler().newParallelSetter(cuboid.world)
+        placer = when (config.SETTER.lowercase(Locale.ENGLISH)) {
+            "parallel" -> ParallelBlockSetter(cuboid.world)
+            "fast" -> FastBlockSetter(cuboid.world)
+            else -> BukkitBlockSetter(cuboid.world)
+        }
 
         // Calculate total block amount in the area
         val width = abs(cuboid.maxX - cuboid.minX) + 1

@@ -4,9 +4,9 @@ import com.artillexstudios.axapi.serializers.Serializers
 import com.artillexstudios.axapi.utils.PaperUtils
 import com.artillexstudios.axapi.utils.StringUtils
 import com.artillexstudios.axmines.AxMinesPlugin
+import com.artillexstudios.axmines.converters.CataMinesConverter
 import com.artillexstudios.axmines.mines.Mine
 import com.artillexstudios.axmines.mines.Mines
-import com.artillexstudios.axmines.mines.editor.MineEditor
 import com.artillexstudios.axmines.mines.editor.MinesEditor
 import com.artillexstudios.axmines.selection.SelectionWand
 import com.artillexstudios.axmines.utils.FileUtils
@@ -16,7 +16,6 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import revxrsal.commands.annotation.Command
 import revxrsal.commands.annotation.DefaultFor
-import revxrsal.commands.annotation.Optional
 import revxrsal.commands.annotation.Subcommand
 import revxrsal.commands.bukkit.annotation.CommandPermission
 
@@ -26,7 +25,12 @@ class AxMinesCommand {
     @Subcommand("reload")
     @CommandPermission("axmines.command.reload")
     fun reload(sender: CommandSender) {
-        sender.sendMessage(StringUtils.formatToString(AxMinesPlugin.MESSAGES.PREFIX + AxMinesPlugin.MESSAGES.RELOAD, Placeholder.unparsed("time", AxMinesPlugin.INSTANCE.reloadWithTime().toString())))
+        sender.sendMessage(
+            StringUtils.formatToString(
+                AxMinesPlugin.MESSAGES.PREFIX + AxMinesPlugin.MESSAGES.RELOAD,
+                Placeholder.unparsed("time", AxMinesPlugin.INSTANCE.reloadWithTime().toString())
+            )
+        )
     }
 
     @Subcommand("wand")
@@ -115,7 +119,13 @@ class AxMinesCommand {
             return
         }
 
-        val file = FileUtils.extractFile(AxMinesPlugin::class.java, "mines/_example.yml", "$name.yml", FileUtils.PLUGIN_DIRECTORY.resolve("mines"), false)
+        val file = FileUtils.extractFile(
+            AxMinesPlugin::class.java,
+            "mines/_example.yml",
+            "$name.yml",
+            FileUtils.PLUGIN_DIRECTORY.resolve("mines"),
+            false
+        )
         val createdMine = Mine(file, false)
         createdMine.config.config.set("selection.1", Serializers.LOCATION.serialize(selection.position1))
         createdMine.config.config.set("selection.2", Serializers.LOCATION.serialize(selection.position2))
@@ -133,6 +143,12 @@ class AxMinesCommand {
     @CommandPermission("axmines.command.reset")
     fun reset(sender: CommandSender, mine: Mine) {
         mine.reset()
+    }
+
+    @Subcommand("convert")
+    @CommandPermission("axmines.command.convert")
+    fun convert(sender: CommandSender) {
+        CataMinesConverter.convertAll()
     }
 
     @DefaultFor("~", "~ help")
