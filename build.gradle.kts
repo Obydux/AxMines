@@ -27,6 +27,7 @@ dependencies {
     compileOnly("commons-io:commons-io:2.15.0")
     compileOnly("org.apache.commons:commons-math3:3.6.1")
     compileOnly("me.clip:placeholderapi:2.11.5")
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.9.21")
 }
 
 tasks {

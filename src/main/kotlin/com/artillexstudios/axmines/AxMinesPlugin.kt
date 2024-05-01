@@ -44,6 +44,7 @@ class AxMinesPlugin : AxPlugin() {
         libraryLoader.loadLibrary(Library.builder().groupId("org.apache.commons").artifactId("commons-text").version("1.11.0").build())
         libraryLoader.loadLibrary(Library.builder().groupId("org.apache.commons").artifactId("commons-text").version("1.11.0").build())
         libraryLoader.loadLibrary(Library.builder().groupId("commons-io").artifactId("commons-io").version("2.15.0").build())
+        libraryLoader.loadLibrary(Library.builder().groupId("org.jetbrains.kotlin").artifactId("kotlin-stdlib").version("1.9.21").build())
 
         INSTANCE = this
 

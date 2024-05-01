@@ -16,7 +16,6 @@ import org.bukkit.conversations.Prompt
 import org.bukkit.conversations.StringPrompt
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
-import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 
 class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<String, Any>) {
@@ -30,7 +29,7 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
 
         GuiFiller(gui).fillBorder(GuiItem(ItemStack(Material.GRAY_STAINED_GLASS_PANE)))
 
-        gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).applyItemFlags(listOf(ItemFlag.HIDE_ATTRIBUTES)).setName("<gray>Go back").get()) {
+        gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).setName("<gray>Go back").get()) {
             MineRewardsEditor(mine, player).open()
         })
 
@@ -124,7 +123,7 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
 
             GuiFiller(gui).fillBorder(GuiItem(ItemStack(Material.GRAY_STAINED_GLASS_PANE)))
 
-            gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).applyItemFlags(listOf(ItemFlag.HIDE_ATTRIBUTES)).setName("<color:#00AAFF>Go back").get()) {
+            gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).setName("<color:#00AAFF>Go back").get()) {
                 MineRewardEditor(mine, player, map).open()
             })
 
@@ -206,7 +205,7 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
 
             GuiFiller(gui).fillBorder(GuiItem(ItemStack(Material.GRAY_STAINED_GLASS_PANE)))
 
-            gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).applyItemFlags(listOf(ItemFlag.HIDE_ATTRIBUTES)).setName("<color:#00AAFF>Go back").get()) {
+            gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).setName("<color:#00AAFF>Go back").get()) {
                 MineRewardEditor(mine, player, map).open()
             })
 
@@ -241,7 +240,7 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
                 mine.config.RANDOM_REWARDS.remove(map)
                 val items =
                     map.getOrDefault("items", ArrayList<MutableMap<Any, Any>>()) as ArrayList<MutableMap<Any, Any>>
-                items.add(ItemBuilder(event.currentItem ?: return@setPlayerInventoryAction).toMap(true))
+                items.add(ItemBuilder(event.currentItem ?: return@setPlayerInventoryAction).serialize(true))
                 
                 map["items"] = items
                 mine.config.RANDOM_REWARDS.add(map)
@@ -267,7 +266,7 @@ class MineRewardEditor(val mine: Mine, val player: Player, val map: MutableMap<S
 
             GuiFiller(gui).fillBorder(GuiItem(ItemStack(Material.GRAY_STAINED_GLASS_PANE)))
 
-            gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).applyItemFlags(listOf(ItemFlag.HIDE_ATTRIBUTES)).setName("<gray>Go back").get()) {
+            gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).setName("<gray>Go back").get()) {
                 MineRewardEditor(mine, player, map).open()
             })
 

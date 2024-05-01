@@ -11,7 +11,6 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
-import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 
 class MineContentsEditor(val mine: Mine, val player: Player) {
@@ -26,7 +25,7 @@ class MineContentsEditor(val mine: Mine, val player: Player) {
 
         GuiFiller(gui).fillBorder(GuiItem(ItemStack(Material.GRAY_STAINED_GLASS_PANE)))
 
-        gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).applyItemFlags(listOf(ItemFlag.HIDE_ATTRIBUTES)).setName("<color:#00AAFF>Go back").get()) {
+        gui.setItem(36, GuiItem(ItemBuilder(Material.TIPPED_ARROW).setName("<color:#00AAFF>Go back").get()) {
             MineEditor(mine, player).open()
         })
 
