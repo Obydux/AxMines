@@ -47,5 +47,4 @@ random-rewards:
       - "eco give <player> 100000"
 
 # The commands to run when the mine is reset
-reset-commands:
-  - "say Mine A has been reset!"
+reset-commands: []
