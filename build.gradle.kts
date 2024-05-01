@@ -1,12 +1,10 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
     kotlin("jvm") version "1.9.21"
     id("io.github.goooler.shadow") version "8.1.7"
 }
 
 group = "com.artillexstudios.axmines"
-version = "1.0.0"
+version = "1.1.0"
 
 repositories {
     mavenCentral()
