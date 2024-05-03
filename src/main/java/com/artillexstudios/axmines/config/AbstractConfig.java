@@ -37,6 +37,11 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -49,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AbstractConfig {
+    private static final Logger log = LoggerFactory.getLogger(AbstractConfig.class);
     private Config config;
     private AbstractConfig parent;
 
@@ -61,6 +67,7 @@ public class AbstractConfig {
         this.parent = parent;
 
         if (path.toFile().exists()) {
+            fixYaml(path.toFile());
             if (!FileUtils.getSuggestions(path.toFile(), logger)) {
                 return;
             }
@@ -112,6 +119,30 @@ public class AbstractConfig {
             set(path, def);
         }
         return get(path, def);
+    }
+
+    private void fixYaml(File file) {
+        StringBuilder builder = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("      of a mine'      of a mine'")) {
+                    // Ignore
+                    continue;
+                } else {
+                    builder.append(line).append("\n");
+                }
+            }
+        } catch (Exception exception) {
+            log.error("An unexpected error occurred while fixing file {}!", file.getName());
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(builder.toString());
+            writer.flush();
+        } catch (Exception exception) {
+            log.error("An unexpected error occurred while fixing file {}!", file.getName());
+        }
     }
 
     protected void setComment(String path, @Nullable List<String> comment) {
