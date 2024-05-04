@@ -328,6 +328,11 @@ class Mine(val file: File, reset: Boolean = true) {
             rewards.add(Reward(chance.toDouble(), commands, itemStacks, blocks))
         }
 
+        if (list.isEmpty()) {
+            LOGGER.error("No blocks set up!")
+            return
+        }
+
         distribution = EnumeratedDistribution(list)
 
         placer = when (config.SETTER.lowercase(Locale.ENGLISH)) {
