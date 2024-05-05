@@ -2,14 +2,17 @@ package com.artillexstudios.axmines.mines.setter
 
 import com.artillexstudios.axapi.nms.NMSHandlers
 import com.artillexstudios.axapi.selection.Cuboid
+import io.th0rgal.oraxen.api.OraxenBlocks
+import java.util.Locale
 import java.util.function.IntConsumer
 import kotlin.math.max
 import kotlin.math.min
 import org.apache.commons.math3.distribution.EnumeratedDistribution
+import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.World
-import org.bukkit.block.data.BlockData
 
-class FastBlockSetter(world: World, distribution: EnumeratedDistribution<BlockData>) : BlockSetter(world, distribution) {
+class OraxenFastBlockSetter(world: World, distribution: EnumeratedDistribution<String>) : BlockSetter(world, distribution) {
     private val setter = NMSHandlers.getNmsHandler().newSetter(world)
 
     override fun fill(cuboid: Cuboid, consumer: IntConsumer) {
@@ -35,7 +38,12 @@ class FastBlockSetter(world: World, distribution: EnumeratedDistribution<BlockDa
                     for (x in minX..maxX) {
                         for (z in minZ..maxZ) {
                             ++blockCount
-                            setter.setBlock(x, y, z, distribution.sample() as BlockData)
+                            val sample = distribution.sample() as String
+                            if (sample.contains("oraxen:")) {
+                                OraxenBlocks.place(sample.substring("oraxen:".length), Location(world, x.toDouble(), y.toDouble(), z.toDouble()))
+                            } else {
+                                setter.setBlock(x, y, z, Material.matchMaterial(sample.uppercase(Locale.ENGLISH))?.createBlockData() ?: continue)
+                            }
                         }
                     }
                 }

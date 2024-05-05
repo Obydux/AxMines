@@ -14,10 +14,11 @@ repositories {
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://jitpack.io/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven("https://repo.oraxen.com/releases/")
 }
 
 dependencies {
-    implementation("com.artillexstudios.axapi:axapi:1.4.190:all")
+    implementation("com.artillexstudios.axapi:axapi:1.4.194:all")
     implementation("org.bstats:bstats-bukkit:3.0.2")
     implementation("dev.triumphteam:triumph-gui:3.1.7")
     compileOnly("org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT")
@@ -28,6 +29,7 @@ dependencies {
     compileOnly("org.apache.commons:commons-math3:3.6.1")
     compileOnly("me.clip:placeholderapi:2.11.5")
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.9.21")
+    compileOnly("com.github.oraxen:oraxen:1.161.0")
 }
 
 tasks {

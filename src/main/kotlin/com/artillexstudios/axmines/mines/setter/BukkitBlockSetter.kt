@@ -8,9 +8,9 @@ import org.apache.commons.math3.distribution.EnumeratedDistribution
 import org.bukkit.World
 import org.bukkit.block.data.BlockData
 
-class BukkitBlockSetter(world: World) : BlockSetter(world) {
+class BukkitBlockSetter(world: World, distribution: EnumeratedDistribution<BlockData>) : BlockSetter(world, distribution) {
 
-    override fun fill(cuboid: Cuboid, distribution: EnumeratedDistribution<BlockData>, consumer: IntConsumer) {
+    override fun fill(cuboid: Cuboid, consumer: IntConsumer) {
         var blockCount = 0
         val chunkMinX: Int = cuboid.minX shr 4
         val chunkMaxX: Int = cuboid.maxX shr 4
@@ -33,7 +33,7 @@ class BukkitBlockSetter(world: World) : BlockSetter(world) {
                     for (x in minX..maxX) {
                         for (z in minZ..maxZ) {
                             ++blockCount
-                            world.setBlockData(x, y, z, distribution.sample())
+                            world.setBlockData(x, y, z, distribution.sample() as BlockData)
                         }
                     }
                 }

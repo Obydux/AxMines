@@ -10,6 +10,8 @@ import com.artillexstudios.axmines.config.impl.MineConfig
 import com.artillexstudios.axmines.mines.setter.BlockSetter
 import com.artillexstudios.axmines.mines.setter.BukkitBlockSetter
 import com.artillexstudios.axmines.mines.setter.FastBlockSetter
+import com.artillexstudios.axmines.mines.setter.OraxenBukkitBlockSetter
+import com.artillexstudios.axmines.mines.setter.OraxenFastBlockSetter
 import com.artillexstudios.axmines.mines.setter.ParallelBlockSetter
 import com.artillexstudios.axmines.utils.TimeUtils
 import java.io.File
@@ -52,7 +54,6 @@ class Mine(val file: File, reset: Boolean = true) {
         private set
     private val rewards = arrayListOf<Reward>()
     private val random = RandomDataGenerator()
-    private var distribution: EnumeratedDistribution<BlockData>? = null
     private val running = AtomicBoolean(false)
 
     init {
@@ -142,7 +143,7 @@ class Mine(val file: File, reset: Boolean = true) {
 
         var placed: Int
         val start = System.currentTimeMillis()
-        placer.fill(cuboid, distribution ?: return) {
+        placer.fill(cuboid) {
             placed = it
             val took = System.currentTimeMillis() - start
 
@@ -225,7 +226,9 @@ class Mine(val file: File, reset: Boolean = true) {
                     0 -> {
                         cuboid.world.players.forEach {
                             if (cuboid.contains(it.location)) {
-                                it.teleport(cuboid.world.getHighestBlockAt(it.location).getLocation().add(0.0, 1.0, 0.0))
+                                it.teleport(
+                                    cuboid.world.getHighestBlockAt(it.location).getLocation().add(0.0, 1.0, 0.0)
+                                )
                             }
                         }
                     }
@@ -270,7 +273,11 @@ class Mine(val file: File, reset: Boolean = true) {
         val corner1 = Serializers.LOCATION.deserialize(config.SELECTION_CORNER_1)
         val corner2 = Serializers.LOCATION.deserialize(config.SELECTION_CORNER_2)
         if (corner1.world == null) {
-            LOGGER.error("The world provided is null! Location: {}. Worlds: {}", config.SELECTION_CORNER_1, Bukkit.getWorlds().joinToString(", "))
+            LOGGER.error(
+                "The world provided is null! Location: {}. Worlds: {}",
+                config.SELECTION_CORNER_1,
+                Bukkit.getWorlds().joinToString(", ")
+            )
             return
         }
 
@@ -288,14 +295,14 @@ class Mine(val file: File, reset: Boolean = true) {
             LOGGER.info("Reloaded config! $corner1 $corner2")
         }
 
-        val list = ArrayList<Pair<BlockData, Double>>(config.CONTENTS.size)
-        config.CONTENTS.forEach { (k, v) ->
-            list.add(
-                Pair.create(
-                    Material.matchMaterial(k.toString().uppercase(Locale.ENGLISH))?.createBlockData() ?: return@forEach,
-                    (v as? Number)?.toDouble() ?: return@forEach
-                )
-            )
+        var oraxen = false
+        run breaking@{
+            config.CONTENTS.forEach { (k, _) ->
+                if (k.toString().contains("oraxen", true)) {
+                    oraxen = true
+                    return@breaking
+                }
+            }
         }
 
         rewards.clear()
@@ -328,18 +335,57 @@ class Mine(val file: File, reset: Boolean = true) {
             rewards.add(Reward(chance.toDouble(), commands, itemStacks, blocks))
         }
 
-        if (list.isEmpty()) {
-            LOGGER.error("No blocks set up!")
-            return
+        if (oraxen) {
+            val list = ArrayList<Pair<String, Double>>(config.CONTENTS.size)
+
+            config.CONTENTS.forEach { (k, v) ->
+                list.add(
+                    Pair.create(
+                        k.toString(),
+                        (v as? Number)?.toDouble() ?: return@forEach
+                    )
+                )
+            }
+
+            if (list.isEmpty()) {
+                LOGGER.error("No blocks set up!")
+                return
+            }
+
+            val distribution = EnumeratedDistribution(list)
+
+            placer = when (config.SETTER.lowercase(Locale.ENGLISH)) {
+                "parallel" -> OraxenFastBlockSetter(cuboid.world, distribution)
+                "fast" -> OraxenFastBlockSetter(cuboid.world, distribution)
+                else -> OraxenBukkitBlockSetter(cuboid.world, distribution)
+            }
+        } else {
+            val list = ArrayList<Pair<BlockData, Double>>(config.CONTENTS.size)
+
+            config.CONTENTS.forEach { (k, v) ->
+                list.add(
+                    Pair.create(
+                        Material.matchMaterial(k.toString().uppercase(Locale.ENGLISH))?.createBlockData()
+                            ?: return@forEach,
+                        (v as? Number)?.toDouble() ?: return@forEach
+                    )
+                )
+            }
+
+            if (list.isEmpty()) {
+                LOGGER.error("No blocks set up!")
+                return
+            }
+
+            val distribution = EnumeratedDistribution(list)
+
+            placer = when (config.SETTER.lowercase(Locale.ENGLISH)) {
+                "parallel" -> ParallelBlockSetter(cuboid.world, distribution)
+                "fast" -> FastBlockSetter(cuboid.world, distribution)
+                else -> BukkitBlockSetter(cuboid.world, distribution)
+            }
         }
 
-        distribution = EnumeratedDistribution(list)
-
-        placer = when (config.SETTER.lowercase(Locale.ENGLISH)) {
-            "parallel" -> ParallelBlockSetter(cuboid.world)
-            "fast" -> FastBlockSetter(cuboid.world)
-            else -> BukkitBlockSetter(cuboid.world)
-        }
 
         // Calculate total block amount in the area
         val width = abs(cuboid.maxX - cuboid.minX) + 1
