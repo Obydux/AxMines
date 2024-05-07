@@ -22,7 +22,6 @@ dependencies {
     implementation("org.bstats:bstats-bukkit:3.0.2")
     implementation("dev.triumphteam:triumph-gui:3.1.7")
     compileOnly("org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT")
-    compileOnly("me.carleslc.Simple-YAML:Simple-Yaml:1.8.4")
     compileOnly("org.slf4j:slf4j-api:2.0.9")
     compileOnly("org.apache.commons:commons-text:1.11.0")
     compileOnly("commons-io:commons-io:2.15.0")

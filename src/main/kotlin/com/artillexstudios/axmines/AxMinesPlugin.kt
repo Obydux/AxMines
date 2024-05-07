@@ -39,7 +39,6 @@ class AxMinesPlugin : AxPlugin() {
         val libraryLoader = BukkitLibraryManager(this)
         libraryLoader.addMavenCentral()
         libraryLoader.addJitPack()
-        libraryLoader.loadLibrary(Library.builder().groupId("me.carleslc.Simple-YAML").artifactId("Simple-Yaml").version("1.8.4").build())
         libraryLoader.loadLibrary(Library.builder().groupId("org.slf4j").artifactId("slf4j-api").version("2.0.9").build())
         libraryLoader.loadLibrary(Library.builder().groupId("org.apache.commons").artifactId("commons-text").version("1.11.0").build())
         libraryLoader.loadLibrary(Library.builder().groupId("org.apache.commons").artifactId("commons-text").version("1.11.0").build())
