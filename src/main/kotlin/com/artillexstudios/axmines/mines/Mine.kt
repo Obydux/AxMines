@@ -10,6 +10,8 @@ import com.artillexstudios.axmines.config.impl.MineConfig
 import com.artillexstudios.axmines.mines.setter.BlockSetter
 import com.artillexstudios.axmines.mines.setter.BukkitBlockSetter
 import com.artillexstudios.axmines.mines.setter.FastBlockSetter
+import com.artillexstudios.axmines.mines.setter.ItemsAdderBukkitBlockSetter
+import com.artillexstudios.axmines.mines.setter.ItemsAdderFastBlockSetter
 import com.artillexstudios.axmines.mines.setter.OraxenBukkitBlockSetter
 import com.artillexstudios.axmines.mines.setter.OraxenFastBlockSetter
 import com.artillexstudios.axmines.mines.setter.ParallelBlockSetter
@@ -296,10 +298,14 @@ class Mine(val file: File, reset: Boolean = true) {
         }
 
         var oraxen = false
+        var itemsAdder = false
         run breaking@{
             config.CONTENTS.forEach { (k, _) ->
                 if (k.toString().contains("oraxen", true)) {
                     oraxen = true
+                    return@breaking
+                } else if (k.toString().contains("itemsadder", true)) {
+                    itemsAdder = true
                     return@breaking
                 }
             }
@@ -358,6 +364,30 @@ class Mine(val file: File, reset: Boolean = true) {
                 "parallel" -> OraxenFastBlockSetter(cuboid.world, distribution)
                 "fast" -> OraxenFastBlockSetter(cuboid.world, distribution)
                 else -> OraxenBukkitBlockSetter(cuboid.world, distribution)
+            }
+        } else if (itemsAdder) {
+            val list = ArrayList<Pair<String, Double>>(config.CONTENTS.size)
+
+            config.CONTENTS.forEach { (k, v) ->
+                list.add(
+                    Pair.create(
+                        k.toString(),
+                        (v as? Number)?.toDouble() ?: return@forEach
+                    )
+                )
+            }
+
+            if (list.isEmpty()) {
+                LOGGER.error("No blocks set up!")
+                return
+            }
+
+            val distribution = EnumeratedDistribution(list)
+
+            placer = when (config.SETTER.lowercase(Locale.ENGLISH)) {
+                "parallel" -> ItemsAdderFastBlockSetter(cuboid.world, distribution)
+                "fast" -> ItemsAdderFastBlockSetter(cuboid.world, distribution)
+                else -> ItemsAdderBukkitBlockSetter(cuboid.world, distribution)
             }
         } else {
             val list = ArrayList<Pair<BlockData, Double>>(config.CONTENTS.size)

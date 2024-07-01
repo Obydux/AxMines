@@ -1,5 +1,6 @@
 package com.artillexstudios.axmines.commands
 
+import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.YamlDocument
 import com.artillexstudios.axapi.serializers.Serializers
 import com.artillexstudios.axapi.utils.PaperUtils
 import com.artillexstudios.axapi.utils.StringUtils
@@ -126,11 +127,12 @@ class AxMinesCommand {
             FileUtils.PLUGIN_DIRECTORY.resolve("mines"),
             false
         )
+        val config = YamlDocument.create(file)
+        config.set("selection.1", Serializers.LOCATION.serialize(selection.position1))
+        config.set("selection.2", Serializers.LOCATION.serialize(selection.position2))
+        config.set("display-name", "<color:#FF0000>$name</#FF0000>")
+        config.save()
         val createdMine = Mine(file, false)
-        createdMine.config.config.set("selection.1", Serializers.LOCATION.serialize(selection.position1))
-        createdMine.config.config.set("selection.2", Serializers.LOCATION.serialize(selection.position2))
-        createdMine.config.config.set("display-name", "<color:#FF0000>$name</#FF0000>")
-        createdMine.config.config.save()
         val maxY = createdMine.cuboid.maxY
         createdMine.reload(false)
         val topLoc = if (selection.position1?.blockY == maxY) selection.position1 else selection.position2

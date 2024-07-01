@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.artillexstudios.axapi:axapi:1.4.213:all")
+    implementation("com.artillexstudios.axapi:axapi:1.4.280:all")
     implementation("org.bstats:bstats-bukkit:3.0.2")
     implementation("dev.triumphteam:triumph-gui:3.1.7")
     compileOnly("org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT")
@@ -29,6 +29,7 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.5")
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.9.21")
     compileOnly("com.github.oraxen:oraxen:1.161.0")
+    compileOnly("com.github.LoneDev6:api-itemsadder:3.6.1")
 }
 
 tasks {
@@ -37,15 +38,15 @@ tasks {
     }
 
     shadowJar {
-        relocate("org.bstats", "com.artillexstudios.axmines.libs.bstats")
         relocate("com.artillexstudios.axapi", "com.artillexstudios.axmines.libs.axapi")
+        relocate("org.bstats", "com.artillexstudios.axmines.libs.bstats")
     }
 
     processResources {
         filteringCharset = Charsets.UTF_8.name()
 
         filesMatching("plugin.yml") {
-            expand(mapOf("version" to project.version,))
+            expand(mapOf("version" to project.version))
         }
     }
 }

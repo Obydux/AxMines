@@ -1,6 +1,8 @@
 name: "AxMines"
 main: "com.artillexstudios.axmines.AxMinesPlugin"
-version: "1.0.0"
+version: "$version"
 api-version: "1.18"
 softdepend:
   - PlaceholderAPI
+  - Oraxen
+  - ItemsAdder
