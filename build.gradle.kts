@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.artillexstudios.axmines"
-version = "1.2.0"
+version = "1.3.0"
 
 repositories {
     mavenCentral()
@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.artillexstudios.axapi:axapi:1.4.280:all")
+    implementation("com.artillexstudios.axapi:axapi:1.4.329:all")
     implementation("org.bstats:bstats-bukkit:3.0.2")
     implementation("dev.triumphteam:triumph-gui:3.1.7")
     compileOnly("org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT")
@@ -40,6 +40,7 @@ tasks {
     shadowJar {
         relocate("com.artillexstudios.axapi", "com.artillexstudios.axmines.libs.axapi")
         relocate("org.bstats", "com.artillexstudios.axmines.libs.bstats")
+        relocate("org.apache.commons.math3", "com.artillexstudios.axmines.libs.axapi.libs.math3")
     }
 
     processResources {

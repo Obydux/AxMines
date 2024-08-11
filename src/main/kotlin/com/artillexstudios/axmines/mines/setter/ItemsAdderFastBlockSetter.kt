@@ -3,6 +3,7 @@ package com.artillexstudios.axmines.mines.setter
 import com.artillexstudios.axapi.nms.NMSHandlers
 import com.artillexstudios.axapi.selection.Cuboid
 import dev.lone.itemsadder.api.CustomBlock
+import dev.lone.itemsadder.api.CustomFurniture
 import java.util.Locale
 import java.util.function.IntConsumer
 import kotlin.math.max
@@ -40,7 +41,12 @@ class ItemsAdderFastBlockSetter(world: World, distribution: EnumeratedDistributi
                             ++blockCount
                             val sample = distribution.sample() as String
                             if (sample.contains("itemsadder:")) {
-                                CustomBlock.place(sample.substring("itemsadder:".length), Location(world, x.toDouble(), y.toDouble(), z.toDouble()))
+                                val block = sample.substring("itemsadder:".length)
+                                if (CustomBlock.isInRegistry(block)) {
+                                    CustomBlock.place(block, Location(world, x.toDouble(), y.toDouble(), z.toDouble()))
+                                } else if (CustomFurniture.isInRegistry(block)) {
+                                    CustomFurniture.spawn(block, Location(world, x.toDouble(), y.toDouble(), z.toDouble()).block)
+                                }
                             } else {
                                 setter.setBlock(x, y, z, Material.matchMaterial(sample.uppercase(Locale.ENGLISH))?.createBlockData() ?: continue)
                             }

@@ -155,7 +155,7 @@ class Mine(val file: File, reset: Boolean = true) {
                 LOGGER.info("Reset mine $name and placed $placed blocks in $took milliseconds!")
             }
 
-            Scheduler.get().run {
+            Scheduler.get().run { _ ->
                 config.RESET_COMMANDS.forEach {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), it)
                 }
