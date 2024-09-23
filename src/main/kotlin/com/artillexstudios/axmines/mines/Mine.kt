@@ -34,6 +34,7 @@ import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
+import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.inventory.ItemStack
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -117,12 +118,16 @@ class Mine(val file: File, reset: Boolean = true) {
         }
     }
 
-    fun onBlockBreak(player: Player, block: Block) {
+    fun onBlockBreak(player: Player, block: Block, event: BlockBreakEvent) {
         blocks--
 
         val rewards = randomRewards(block)
         if (rewards.isNotEmpty()) {
             rewards.forEach {
+                if (it.preventDrops) {
+                    event.isDropItems = false
+                }
+
                 it.execute(player)
             }
         }
@@ -338,7 +343,8 @@ class Mine(val file: File, reset: Boolean = true) {
                 LOGGER.info("Added new reward!")
             }
 
-            rewards.add(Reward(chance.toDouble(), commands, itemStacks, blocks))
+            val preventDrops = it["prevent-drops"] as? Boolean ?: false
+            rewards.add(Reward(chance.toDouble(), commands, itemStacks, blocks, preventDrops))
         }
 
         if (oraxen) {
@@ -451,7 +457,8 @@ class Mine(val file: File, reset: Boolean = true) {
         val chance: Double,
         val commands: List<String>,
         val items: List<ItemStack>,
-        val blocks: List<Material>
+        val blocks: List<Material>,
+        val preventDrops: Boolean
     ) {
 
         fun execute(player: Player) {

@@ -15,7 +15,7 @@ class BlockListener : Listener {
     fun onBlockBreakEvent(event: BlockBreakEvent) {
         Mines.getTypes().forEach { (_, mine) ->
             if (mine.cuboid.contains(event.block.location)) {
-                mine.onBlockBreak(event.player, event.block)
+                mine.onBlockBreak(event.player, event.block, event)
             }
         }
     }

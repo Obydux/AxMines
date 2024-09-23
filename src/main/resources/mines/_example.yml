@@ -37,6 +37,7 @@ reset:
 
 random-rewards:
   - chance: 0.001
+    prevent-drops: false # Set to true if you don't want the block broken to drop it's default loot
     blocks: # If you want it to work on any block, leave it empty, or don't even add it
       - "diamond_block"
       - "emerald_block"
