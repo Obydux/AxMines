@@ -3,7 +3,7 @@ package com.artillexstudios.axmines
 import com.artillexstudios.axapi.AxPlugin
 import com.artillexstudios.axapi.libs.libby.BukkitLibraryManager
 import com.artillexstudios.axapi.libs.libby.Library
-import com.artillexstudios.axapi.utils.FeatureFlags
+import com.artillexstudios.axapi.utils.featureflags.FeatureFlags
 import com.artillexstudios.axapi.utils.Version
 import com.artillexstudios.axmines.commands.AxMinesCommand
 import com.artillexstudios.axmines.config.impl.Config
@@ -23,8 +23,8 @@ class AxMinesPlugin : AxPlugin() {
         lateinit var MESSAGES: Messages
     }
 
-    override fun updateFlags() {
-        FeatureFlags.PACKET_ENTITY_TRACKER_ENABLED.set(true)
+    override fun updateFlags(flags: FeatureFlags) {
+        flags.PACKET_ENTITY_TRACKER_ENABLED.set(true)
     }
 
     override fun enable() {
